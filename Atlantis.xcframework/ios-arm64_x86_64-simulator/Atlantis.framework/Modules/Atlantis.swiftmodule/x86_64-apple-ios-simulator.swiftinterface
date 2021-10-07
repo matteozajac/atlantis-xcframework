@@ -1,0 +1,84 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 5.3.2 (swiftlang-1200.0.45 clang-1200.0.32.28)
+// swift-module-flags: -target x86_64-apple-ios11.0-simulator -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -module-name Atlantis
+import Compression
+import Foundation
+import ObjectiveC
+import Swift
+import UIKit
+import zlib
+public protocol AtlantisDelegate : AnyObject {
+  func atlantisDidHaveNewPackage(_ package: TrafficPackage)
+}
+@objc @_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers final public class Atlantis : ObjectiveC.NSObject {
+  public static let buildVersion: Swift.String
+  @objc final public class func start(hostName: Swift.String? = nil)
+  @objc final public class func stop()
+  final public class func setEnableTransportLayer(_ isEnabled: Swift.Bool)
+  final public class func setDelegate(_ delegate: AtlantisDelegate)
+  @objc deinit
+}
+extension Atlantis {
+  final public class func add(request: Foundation.URLRequest, response: Foundation.URLResponse, responseBody: Foundation.Data?)
+  final public class func add(request: Foundation.URLRequest, error: Swift.Error)
+  final public class func add(request: Request, response: Response, responseBody: Foundation.Data?)
+  final public class func addGRPC<T, U>(url: Swift.String, requestObject: T?, responseObject: U?, success: Swift.Bool, statusCode: Swift.Int, statusMessage: Swift.String?) where T : Swift.Encodable, U : Swift.Encodable
+}
+@_hasMissingDesignatedInitializers final public class TrafficPackage : Swift.Codable, Swift.CustomDebugStringConvertible {
+  final public let id: Swift.String
+  final public let startAt: Foundation.TimeInterval
+  final public let request: Request
+  final public var response: Response? {
+    get
+  }
+  final public var error: CustomError? {
+    get
+  }
+  final public var responseBodyData: Foundation.Data {
+    get
+  }
+  final public var endAt: Foundation.TimeInterval? {
+    get
+  }
+  final public var lastData: Foundation.Data? {
+    get
+  }
+  final public var debugDescription: Swift.String {
+    get
+  }
+  public init(from decoder: Swift.Decoder) throws
+  @objc deinit
+  final public func encode(to encoder: Swift.Encoder) throws
+}
+public struct Header : Swift.Codable {
+  public let key: Swift.String
+  public let value: Swift.String
+  public init(key: Swift.String, value: Swift.String)
+  public init(from decoder: Swift.Decoder) throws
+  public func encode(to encoder: Swift.Encoder) throws
+}
+@_hasMissingDesignatedInitializers final public class Request : Swift.Codable {
+  final public let url: Swift.String
+  final public let method: Swift.String
+  final public let headers: [Header]
+  final public var body: Foundation.Data? {
+    get
+  }
+  public init(url: Swift.String, method: Swift.String, headers: [Header], body: Foundation.Data?)
+  public init(from decoder: Swift.Decoder) throws
+  @objc deinit
+  final public func encode(to encoder: Swift.Encoder) throws
+}
+public struct Response : Swift.Codable {
+  public let statusCode: Swift.Int
+  public let headers: [Header]
+  public init(statusCode: Swift.Int, headers: [Header])
+  public init(from decoder: Swift.Decoder) throws
+  public func encode(to encoder: Swift.Encoder) throws
+}
+public struct CustomError : Swift.Codable {
+  public let code: Swift.Int
+  public let message: Swift.String
+  public init(from decoder: Swift.Decoder) throws
+  public func encode(to encoder: Swift.Encoder) throws
+}
